@@ -1,0 +1,15 @@
+{
+  "name": "@fleetrelay/contracts",
+  "version": "1.0.0",
+  "description": "Shared TypeScript data contracts and interfaces for FleetRelay",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": ["fleetrelay", "telemetry", "contracts", "types"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

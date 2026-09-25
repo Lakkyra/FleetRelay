@@ -1,0 +1,11 @@
+{
+  "name": "@fleetrelay/web-dispatcher",
+  "version": "1.0.0",
+  "description": "FleetRelay Web Dispatcher Command Center & Live Telemetry Map",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y serve . -p 3000"
+  },
+  "keywords": ["fleetrelay", "dispatcher", "leaflet", "websockets", "telemetry"],
+  "license": "MIT"
+}

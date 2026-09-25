@@ -1,0 +1,68 @@
+services:
+  # PostgreSQL with PostGIS extension for high-performance spatial indexing
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: fleetrelay-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: fleet_user
+      POSTGRES_PASSWORD: fleet_secret_password
+      POSTGRES_DB: fleetrelay
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./services/backend/src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fleet_user -d fleetrelay"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis for ultra-low latency Telemetry Streams, Geo caching, and Pub/Sub
+  redis:
+    image: redis:7.2-alpine
+    container_name: fleetrelay-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--save", "60", "1"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # FleetRelay Backend Service (Fastify, PostGIS queries, WebSockets, Redis Streams)
+  backend:
+    build:
+      context: .
+      dockerfile: services/backend/Dockerfile
+    container_name: fleetrelay-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      HOST: "0.0.0.0"
+      DATABASE_URL: "postgresql://fleet_user:fleet_secret_password@postgres:5432/fleetrelay"
+      REDIS_URL: "redis://redis:6379"
+      NODE_ENV: "development"
+      TELEMETRY_BATCH_SIZE: 100
+      TELEMETRY_FLUSH_INTERVAL_MS: 500
+      DISPATCH_RADIUS_METERS: 5000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./services/backend:/app/services/backend
+      - ./packages/contracts:/app/packages/contracts
+      - /app/node_modules
+
+volumes:
+  postgres-data:
+  redis-data:

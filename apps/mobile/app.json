@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "FleetRelay Driver",
+    "slug": "fleetrelay-driver",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0b0f19"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.fleetrelay.driver",
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch", "processing"],
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "FleetRelay requires persistent background location tracking to dispatch nearby jobs and transmit real-time delivery telemetry.",
+        "NSLocationWhenInUseUsageDescription": "FleetRelay needs your location to display your vehicle on the active dispatch map.",
+        "NSMotionUsageDescription": "FleetRelay uses accelerometer motion data to detect when you are stationary and save battery life."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0b0f19"
+      },
+      "package": "com.fleetrelay.driver",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "ACTIVITY_RECOGNITION",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_LOCATION",
+        "WAKE_LOCK"
+      ]
+    },
+    "plugins": [
+      [
+        "react-native-background-geolocation",
+        {
+          "license": "YOUR_KEY"
+        }
+      ]
+    ]
+  }
+}

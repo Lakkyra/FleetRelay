@@ -1,0 +1,32 @@
+{
+  "name": "fleet-relay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FleetRelay — Real-Time Fleet Telemetry & Automated Geospatial Dispatch Engine",
+  "workspaces": [
+    "packages/*",
+    "services/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "start:backend": "npm run dev --workspace=services/backend",
+    "start:web": "npm run dev --workspace=apps/web-dispatcher",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  },
+  "keywords": [
+    "fleet-management",
+    "telemetry",
+    "postgis",
+    "geospatial",
+    "redis-streams",
+    "websockets",
+    "react-native",
+    "dispatch-engine"
+  ],
+  "author": "FleetRelay Team",
+  "license": "MIT"
+}
